@@ -13,10 +13,11 @@ def home():
 def submit_info():
     data = request.get_json()
     name = data.get('name')
-    email = data.get('email')
-    city = data.get('city')
+    timeforgarden = data.get('timeforgarden')
+    state = data.get('state')
+    climate = data.get('climate')
     
-    print(f"New submission: {name}, {email}, {city}")
+    print(f"New submission: {name}, {timeforgarden}, {state}, {climate}")
 
     # (Optional) Save info somewhere later
 

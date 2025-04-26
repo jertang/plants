@@ -1,18 +1,26 @@
-from flask import Flask, jsonify, request
-from flask_cors import CORS #not sure when this is used for now 
+from flask import Flask, request, jsonify
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 
-#homepage
-@app.route("/")
+@app.route('/')
 def home():
-    return "Test"
+    return "This is Flask backend, use the frontend at localhost:3000!"
 
-#second page for asking information
-@app.route("/askinfo")
-def askinfo():
-    return "This is the ask info section"
 
-if __name__ == "__main__":
-    app.run(port=5000, debug=True) 
+@app.route('/submitinfo', methods=['POST'])
+def submit_info():
+    data = request.get_json()
+    name = data.get('name')
+    email = data.get('email')
+    city = data.get('city')
+    
+    print(f"New submission: {name}, {email}, {city}")
 
+    # (Optional) Save info somewhere later
+
+    return jsonify({'message': 'Information received successfully!'})
+
+if __name__ == '__main__':
+    app.run(debug=True, port=5000)

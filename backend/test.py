@@ -1,5 +1,11 @@
+import google.generativeai as genai
+import os
+from dotenv import load_dotenv
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+
+#load the environment variables
+load_dotenv()
 
 app = Flask(__name__)
 CORS(app)
@@ -34,8 +40,39 @@ def filter_crops(climate_type, time_limit):
         if climate_crop["days"] <= time_limit:
             res.append(climate_crop)
 
-    sorted_res = sorted(res, key=lambda x:['days'])
+    sorted_res = sorted(res, key=lambda x:x['days'])
+    #print("Sorted crops:", sorted_res)
     return sorted_res
+
+
+def generate_summary(crops):
+    crops_list = [f"{crop['name']} ({crop['days']} days, {crop['climate']})" for crop in crops]
+    prompt = (
+        "Say 'Hey new gardener!' at the beginning.\n\n"
+        "Here are some crops that grow well in the specified climate and time limit:\n\n"
+        + "\n".join(crops_list)
+        + "\n\n"
+        "Please generate a friendly, thorough summary that:\n"
+        "- Highlights the nutritional and health benefits of these crops.\n"
+        "- Explains how easy each crop is to grow.\n"
+        "- Mentions which season each crop grows best in."
+    )
+
+    genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+
+    #cover bug fix and test cases
+    try:
+        model = genai.GenerativeModel('gemini-1.5-flash')
+        response = model.generate_content(prompt)
+        ai_summary = response.text
+    except Exception as e:
+        print("=== Gemini API ERROR START ===")
+        print(repr(e))  # << print full raw error details
+        print("=== Gemini API ERROR END ===")
+        ai_summary = "We are currently unable to generate a summary. Please try again later."
+
+    return ai_summary
+
 
 
 @app.route('/')
@@ -55,11 +92,14 @@ def submit_info():
 
     recommendations = filter_crops(climate, timeforgarden)
 
-    # (Optional) Save info somewhere later
+    summary = generate_summary(recommendations)
+    
+    # Return responses to frontend
 
     return jsonify({
         'message': 'Information received successfully!', 
-        'recommendations' : recommendations
+        'recommendations' : recommendations,
+        'LLM summary' : summary #AI generated summary of selected plants
     })
 
 

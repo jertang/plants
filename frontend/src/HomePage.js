@@ -29,8 +29,8 @@ export default function HomePage() {
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
           minHeight: "70vh",
-          color: "white",
-          textShadow: "6px 6px 6px rgba(0, 0, 0, 0.7)",
+          color: "ivory",
+          textShadow: "8px 8px 8px rgba(0, 0, 0, 0.7)",
           flexDirection: "column",
           padding: "2rem"
         }}

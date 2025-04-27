@@ -66,11 +66,7 @@ export default function JoinPage() {
               value={state}
               onChange={(e) => setState(e.target.value)}
             >
-<<<<<<< HEAD
             <option value="">Select your state</option>
-=======
-              <option value="">Select your state</option>
->>>>>>> refs/remotes/origin/main
             <option value="AL">Alabama</option>
             <option value="AK">Alaska</option>
             <option value="AZ">Arizona</option>

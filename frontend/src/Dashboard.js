@@ -144,14 +144,18 @@ export default function Dashboard() {
       </section>
 
       <section>
-      <h2 className="fw-bold mb-4">🥦 Nutritional Benefits</h2>
-      <ul className="list-group">
-        {healthBenefits[climate]?.map((nutrition, index) => (
-        <li key={index} className="list-group-item">
-          {nutrition}
-        </li>
-        ))}
-      </ul>
+        <h2 className="fw-bold mb-4">🥦 Nutritional Benefits</h2>
+        <ul className="list-group">
+          {crops.length > 0 ? (
+            crops.map((crop, index) => (
+              <li key={index} className="list-group-item">
+                <strong>{crop.name}:</strong> {crop.nutrition}
+              </li>
+            ))
+          ) : (
+            <li className="list-group-item">No nutritional information available.</li>
+          )}
+        </ul>
       </section>
     </div>
     );

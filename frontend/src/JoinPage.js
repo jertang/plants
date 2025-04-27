@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import logo from "./images/logo.png";
+import logo2 from "./images/logo2.png";
 
 export default function JoinPage() {
   const [state, setState] = useState("");
@@ -36,7 +36,7 @@ export default function JoinPage() {
     <div className="d-flex align-items-center justify-content-center min-vh-100 bg-light">
       <div className="card shadow p-4" style={{ width: '100%', maxWidth: '450px' }}>
         <div className="text-center mb-4">
-            <img src={logo} alt="Plantable Logo" style={{ width: "50px", height: "50px", marginRight: "12px" }} />
+            <img src={logo2} alt="Plantable Logo" style={{ width: "50px", height: "50px", marginRight: "12px" }} />
         </div>
 
         <h2 className="text-center fw-bold mb-2 text-success">Welcome to Plantable!</h2>

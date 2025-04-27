@@ -17,14 +17,40 @@ def load_crops_from_csv():
 
     with open(file_path, newline='', encoding='utf-8') as csvfile:
         reader = csv.DictReader(csvfile)
+        print("CSV Columns:", reader.fieldnames)  # ✅ PRINT 1: see actual column names
+
         for row in reader:
-            if row.get("Crop") and row.get("Climate") and row.get("Days_to_Grow"):
-                crops.append({
-                    "name": row["Crop"].strip(),
-                    "climate": row["Climate"].capitalize().strip(),  # 'Mild', 'Hot', 'Cold'
-                    "days": int(float(row["Days_to_Grow"]))  # Convert 45.0 → 45
-                })
+            name = row.get('Crop', '').strip()
+            climate = row.get('Climate', '').strip()
+            days_str = row.get('Days_to_Grow', '').strip()
+            nutrition = row.get('Nutritional_Benefits', 'No nutrition info available').strip()
+
+            if name and days_str.isdigit():
+                days = int(days_str)
+
+                climate_lower = climate.lower()
+                if "cool" in climate_lower or "fall" in climate_lower:
+                    climate_type = "Cold"
+                elif "warm" in climate_lower or "summer" in climate_lower:
+                    climate_type = "Hot"
+                else:
+                    climate_type = "Mild"
+
+                crop_obj = {
+                    "name": name,
+                    "climate": climate_type,
+                    "nutrition": nutrition,
+                    "days": days
+                }
+
+                crops.append(crop_obj)
+
+                print("Added crop:", crop_obj)  # ✅ PRINT 2: see every crop that is actually added
+
+    print(f"Total crops loaded: {len(crops)}")  # ✅ PRINT 3: final confirmation
     return crops
+
+
 
 def filter_crops(climate_type, time_limit):
     # 15 Crops Database
@@ -46,7 +72,7 @@ def filter_crops(climate_type, time_limit):
 
 
 def generate_summary(crops):
-    crops_list = [f"{crop['name']} ({crop['days']} days, {crop['climate']})" for crop in crops]
+    crops_list = [f"{crop['name']} ({crop['days']} days, {crop['climate']}) - {crop['nutrition']}" for crop in crops]
     prompt = (
         "Say 'Hey new gardener!' at the beginning.\n\n"
         "Here are some crops that grow well in the specified climate and time limit:\n\n"
@@ -56,7 +82,6 @@ def generate_summary(crops):
         "- Highlights the nutritional and health benefits of these crops.\n"
         "- Explains how easy each crop is to grow.\n"
         "- Mentions which season each crop grows best in."
-        "- Finally provide 2 new recipes(url links to them) with the following vegetables in that list"
     )
 
     genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
@@ -88,6 +113,7 @@ def submit_info():
     timeforgarden = int(data.get('timeforgarden'))
     state = data.get('state')
     climate = data.get('climate')
+    nutrition_benefits = data.get('nutritional_benefits')
     
     print(f"New submission: {name}, {climate}, {timeforgarden} days max")
 

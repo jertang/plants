@@ -2,6 +2,8 @@
 import { Routes, Route, Link } from 'react-router-dom';
 import HomePage from './HomePage';
 import JoinPage from './JoinPage';
+import Dashboard from './Dashboard'; 
+
 
 function App() {
   return (
@@ -15,6 +17,7 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/join" element={<JoinPage />} />
+        <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
     </div>
   );

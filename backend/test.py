@@ -1,5 +1,6 @@
 import google.generativeai as genai
 import os
+import csv
 from dotenv import load_dotenv
 from flask import Flask, request, jsonify
 from flask_cors import CORS
@@ -10,25 +11,24 @@ load_dotenv()
 app = Flask(__name__)
 CORS(app)
 
+def load_crops_from_csv():
+    crops = []
+    file_path = os.path.join('data', 'Crop_Database_with_Days_to_Grow.csv')
+
+    with open(file_path, newline='', encoding='utf-8') as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            if row.get("Crop") and row.get("Climate") and row.get("Days_to_Grow"):
+                crops.append({
+                    "name": row["Crop"].strip(),
+                    "climate": row["Climate"].capitalize().strip(),  # 'Mild', 'Hot', 'Cold'
+                    "days": int(float(row["Days_to_Grow"]))  # Convert 45.0 → 45
+                })
+    return crops
+
 def filter_crops(climate_type, time_limit):
     # 15 Crops Database
-    crops = [
-        {"name": "Lettuce", "climate": "Mild", "days": 30},
-        {"name": "Spinach", "climate": "Mild", "days": 40},
-        {"name": "Carrot", "climate": "Mild", "days": 50},
-        {"name": "Radish", "climate": "Mild", "days": 25},
-        {"name": "Peas", "climate": "Mild", "days": 60},
-        {"name": "Tomato", "climate": "Hot", "days": 60},
-        {"name": "Pepper", "climate": "Hot", "days": 70},
-        {"name": "Okra", "climate": "Hot", "days": 50},
-        {"name": "Kale", "climate": "Cold", "days": 40},
-        {"name": "Broccoli", "climate": "Cold", "days": 50},
-        {"name": "Cabbage", "climate": "Cold", "days": 70},
-        {"name": "Beets", "climate": "Mild", "days": 60},
-        {"name": "Swiss Chard", "climate": "Mild", "days": 45},
-        {"name": "Zucchini", "climate": "Hot", "days": 50},
-        {"name": "Corn", "climate": "Hot", "days": 90},
-    ]
+    crops = load_crops_from_csv()
     #collect climate type 
     specific_climate = []
     for crop in crops: 
@@ -52,10 +52,11 @@ def generate_summary(crops):
         "Here are some crops that grow well in the specified climate and time limit:\n\n"
         + "\n".join(crops_list)
         + "\n\n"
-        "Please generate a friendly, thorough summary that:\n"
+        "Please generate a friendly, thorough (3-4 sentences) summary that:\n"
         "- Highlights the nutritional and health benefits of these crops.\n"
         "- Explains how easy each crop is to grow.\n"
         "- Mentions which season each crop grows best in."
+        "- Finally provide 2 new recipes(url links to them) with the following vegetables in that list"
     )
 
     genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
@@ -91,6 +92,7 @@ def submit_info():
     print(f"New submission: {name}, {climate}, {timeforgarden} days max")
 
     recommendations = filter_crops(climate, timeforgarden)
+    print("Recommendations generated:", recommendations)
 
     summary = generate_summary(recommendations)
     

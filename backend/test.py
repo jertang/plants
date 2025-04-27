@@ -55,25 +55,20 @@ def filter_crops(climate_type, dedication_level):
     crops = load_crops_from_csv()
 
     dedication_ranges = {
-        "Low": (0, 30),
-        "Medium": (31, 75),
-        "High": (76, 150)
+        "low": (0, 30),
+        "medium": (31, 75),
+        "high": (76, 150)
     }
 
-    min_days, max_days = dedication_ranges.get(dedication_level, (0, 9999))
+    min_days, max_days = dedication_ranges.get(dedication_level.lower(), (0, 9999))
     print(f"Dedication Level: {dedication_level} -> Days range: {min_days}-{max_days}")
     print(f"User requested Climate: {climate_type}")
-
-    # Debug: print all crops
-    print("== ALL CROPS ==")
-    for crop in crops:
-        print(f"{crop['name']} | Climate: {crop['climate']} | Days: {crop['days']}")
 
     specific_climate = []
     for crop in crops:
         if crop["climate"].lower() == climate_type.lower():
             specific_climate.append(crop)
-            
+
     res = []
     for climate_crop in specific_climate:
         if min_days <= climate_crop["days"] <= max_days:
@@ -122,12 +117,13 @@ def home():
 @app.route('/submitinfo', methods=['POST'])
 def submit_info():
     data = request.get_json()
+    print("Received from frontend:", data)  # Add this line for debugging
     name = data.get('name')
     #timeforgarden = int(data.get('timeforgarden'))
-    dedication_level = data.get('dedication_level')
+    dedication_level = data.get('timeCommitment')
     state = data.get('state')
     climate = data.get('climate')
-    nutrition_benefits = data.get('nutritional_benefits')
+    #nutrition_benefits = data.get('nutritional_benefits')
     
     print(f"New submission: {name}, {climate}, {dedication_level}")
 

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import logo from "./images/logo.png";
 
 export default function JoinPage() {
   const [state, setState] = useState("");
@@ -43,12 +44,12 @@ export default function JoinPage() {
           </div>
         </div>
 
-        <h2 className="text-center fw-bold mb-2 text-success">Welcome to Feed It Eat It!</h2>
+        <h2 className="text-center fw-bold mb-2 text-success">Welcome to Plantable!</h2>
         <p className="text-center text-muted mb-4">Let's get you started on your healthy journey!</p>
 
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
-            <label className="form-label fw-bold">🌱 State</label>
+            <img src={logo} alt="Plantable Logo" style={{ width: "50px", height: "50px", marginRight: "12px" }} />
             <select
               className="form-select"
               style={{ maxWidth: '100%' }}

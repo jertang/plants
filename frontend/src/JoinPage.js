@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 
 export default function JoinPage() {
@@ -6,74 +7,115 @@ export default function JoinPage() {
   const [timeCommitment, setTimeCommitment] = useState("");
 
   return (
-    <div className="min-h-screen bg-gray-50 font-sans p-8 flex flex-col items-center justify-center relative overflow-hidden">
-      {/* Main Card */}
-      <div className="bg-white p-8 rounded-2xl shadow-2xl max-w-md w-full z-10 animate-fade-in">
-        {/* Logo */}
-        <div className="flex items-center justify-center mb-6">
-          <div className="bg-accent text-white rounded-full h-12 w-12 flex items-center justify-center font-bold text-lg">
+    <div className="d-flex align-items-center justify-content-center min-vh-100 bg-light">
+      <div className="card shadow p-4" style={{ width: '100%', maxWidth: '450px' }}>
+        <div className="text-center mb-4">
+          <div className="bg-success text-white rounded-circle d-flex align-items-center justify-content-center" style={{ width: '50px', height: '50px', fontSize: '20px', fontWeight: 'bold' }}>
             Y
           </div>
         </div>
 
-        {/* Title */}
-        <h1 className="text-3xl font-bold text-primary text-center mb-2">
-          We’re so happy you’re here!
-        </h1>
-        <p className="text-center text-muted mb-8">
-          Now let’s get the seeds planted...
-        </p>
+        <h2 className="text-center fw-bold mb-2 text-success">Welcome to Feed It Eat It!</h2>
+        <p className="text-center text-muted mb-4">Let's get you started on your healthy journey!</p>
 
-        {/* Form Fields */}
-        <div className="space-y-6">
-          {/* State Field */}
-          <div className="flex items-center p-4 border rounded-lg bg-gray-50 shadow-sm hover:shadow-md transition">
-            <span className="text-2xl mr-3">🌿</span>
-            <input
-              type="text"
-              placeholder="What State do you live in?"
+        <form>
+          <div className="mb-3">
+            <label className="form-label fw-bold">🌱 State</label>
+            <select
+              className="form-select"
+              style={{ maxWidth: '100%' }}
               value={state}
               onChange={(e) => setState(e.target.value)}
-              className="w-full bg-transparent focus:outline-none text-gray-700"
-            />
-          </div>
-
-          {/* Climate Field */}
-          <div className="flex items-center p-4 border rounded-lg bg-gray-50 shadow-sm hover:shadow-md transition">
-            <span className="text-2xl mr-3">🍅</span>
-            <input
-              type="text"
-              placeholder="What's the climate like?"
-              value={climate}
-              onChange={(e) => setClimate(e.target.value)}
-              className="w-full bg-transparent focus:outline-none text-gray-700"
-            />
-          </div>
-
-          {/* Time Commitment Dropdown */}
-          <div>
-            <label className="block mb-2 text-gray-700 font-semibold">
-              How much time to dedicate to your garden
-            </label>
-            <select
-              value={timeCommitment}
-              onChange={(e) => setTimeCommitment(e.target.value)}
-              className="w-full p-4 border rounded-lg bg-gray-50 shadow-sm focus:outline-none hover:shadow-md transition"
             >
-              <option value="">Dropdown 🌱 🌱🌱 🌱🌱🌱</option>
-              <option value="low">🌱 Low</option>
-              <option value="medium">🌱🌱 Medium</option>
-              <option value="high">🌱🌱🌱 High</option>
+              <option value="">Select your state</option>
+              <option value="AL">Alabama</option>
+              <option value="AK">Alaska</option>
+              <option value="AZ">Arizona</option>
+              <option value="AR">Arkansas</option>
+              <option value="CA">California</option>
+              <option value="CO">Colorado</option>
+              <option value="CT">Connecticut</option>
+              <option value="DE">Delaware</option>
+              <option value="FL">Florida</option>
+              <option value="GA">Georgia</option>
+              <option value="HI">Hawaii</option>
+              <option value="ID">Idaho</option>
+              <option value="IL">Illinois</option>
+              <option value="IN">Indiana</option>
+              <option value="IA">Iowa</option>
+              <option value="KS">Kansas</option>
+              <option value="KY">Kentucky</option>
+              <option value="LA">Louisiana</option>
+              <option value="ME">Maine</option>
+              <option value="MD">Maryland</option>
+              <option value="MA">Massachusetts</option>
+              <option value="MI">Michigan</option>
+              <option value="MN">Minnesota</option>
+              <option value="MS">Mississippi</option>
+              <option value="MO">Missouri</option>
+              <option value="MT">Montana</option>
+              <option value="NE">Nebraska</option>
+              <option value="NV">Nevada</option>
+              <option value="NH">New Hampshire</option>
+              <option value="NJ">New Jersey</option>
+              <option value="NM">New Mexico</option>
+              <option value="NY">New York</option>
+              <option value="NC">North Carolina</option>
+              <option value="ND">North Dakota</option>
+              <option value="OH">Ohio</option>
+              <option value="OK">Oklahoma</option>
+              <option value="OR">Oregon</option>
+              <option value="PA">Pennsylvania</option>
+              <option value="RI">Rhode Island</option>
+              <option value="SC">South Carolina</option>
+              <option value="SD">South Dakota</option>
+              <option value="TN">Tennessee</option>
+              <option value="TX">Texas</option>
+              <option value="UT">Utah</option>
+              <option value="VT">Vermont</option>
+              <option value="VA">Virginia</option>
+              <option value="WA">Washington</option>
+              <option value="WV">West Virginia</option>
+              <option value="WI">Wisconsin</option>
+              <option value="WY">Wyoming</option>
             </select>
           </div>
-        </div>
 
-        {/* Save Button */}
-        <button className="w-full bg-accent text-white py-3 rounded-lg font-bold text-lg mt-8 transform transition hover:scale-105 hover:bg-secondary">
-          SAVE
-        </button>
+          <div className="mb-3">
+            <label className="form-label fw-bold">🍅 Climate</label>
+            <select
+              className="form-select"
+              style={{ maxWidth: '100%' }}
+              value={climate}
+              onChange={(e) => setClimate(e.target.value)}
+            >
+              <option value="">Select your climate</option>
+              <option value="hot">🔥 Hot</option>
+              <option value="mild">🌤️ Mild</option>
+              <option value="cold">❄️ Cold</option>
+            </select>
+          </div>
+
+          <div className="mb-4">
+            <label className="form-label fw-bold">🕒 Time Commitment</label>
+            <select
+              className="form-select"
+              style={{ maxWidth: '100%' }}
+              value={timeCommitment}
+              onChange={(e) => setTimeCommitment(e.target.value)}
+            >
+              <option value="">Select dedication level 🕒🕒🕒</option>
+              <option value="low">🕒 Low</option>
+              <option value="medium">🕒🕒 Medium</option>
+              <option value="high">🕒🕒🕒 High</option>
+            </select>
+          </div>
+
+          <button type="submit" className="btn btn-success w-100 rounded-pill fw-bold">
+            SAVE
+          </button>
+        </form>
       </div>
     </div>
   );
 }
-

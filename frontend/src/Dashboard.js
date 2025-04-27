@@ -142,7 +142,8 @@ export default function Dashboard() {
         )}
       </div>
       </section>
-
+      
+      {/* Nutritional Benefits Section */}
       <section>
         <h2 className="fw-bold mb-4">🥦 Nutritional Benefits</h2>
         <ul className="list-group">

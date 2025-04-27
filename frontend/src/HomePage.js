@@ -13,8 +13,9 @@ export default function HomePage() {
         <div className="container d-flex justify-content-between">
           <div className="d-flex align-items-center gap-4">
             <a className="nav-link" href="#">FAQ</a>
-            <a className="nav-link" href="#">Contact Us</a>
             <a className="nav-link" href="#">Blog</a>
+             <a className="nav-link" href="#">About Us</a>
+            <a className="nav-link" href="#">Contact Us</a>
           </div>
         </div>
       </nav>

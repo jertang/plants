@@ -7,7 +7,6 @@ export default function Dashboard() {
   const location = useLocation();
   const {name, state, climate, timeCommitment } = location.state || {};
 
-
   const [summary, setSummary] = useState("");
   const [crops, setCrops] = useState([]);
   const [recipes, setRecipes] = useState({});
@@ -30,7 +29,7 @@ export default function Dashboard() {
 
 
 
-  
+    
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -69,6 +68,7 @@ export default function Dashboard() {
 
   }, [name, state, climate, timeCommitment]);
 
+
   return (
     <div className="container py-5">
       <h1 className="text-center fw-bold text-success mb-4">Here's what you can grow and enjoy!</h1>
@@ -84,8 +84,28 @@ export default function Dashboard() {
             <div className="row g-3 mb-3" key={rowIndex}>
               {crops.slice(rowIndex * 4, rowIndex * 4 + 4).map((crop, index) => (
                 <div className="col-md-3" key={index}>
-                  <div className="card shadow-sm p-3 text-center h-100">
+                  <div 
+                    className="card shadow-sm p-3 text-center h-100 position-relative"
+                    style={{ cursor: "pointer" }}
+                  >
                     <h5 className="fw-bold">{crop.name}</h5>
+                    {/* Hidden popup box that appears on hover */}
+                    <div
+                      className="crop-info-popup position-absolute bg-white p-3 rounded shadow"
+                      style={{
+                        top: "50%",
+                        left: "105%",
+                        transform: "translateY(-50%)",
+                        minWidth: "220px",
+                        display: "none",
+                        zIndex: 10,
+                        textAlign: "left",
+                        fontSize: "0.9rem"
+                      }}
+                    >
+                      <p className="mb-2"><strong>Climate:</strong> {crop.climate}</p>
+                      <p className="mb-2"><strong>Days to Grow:</strong> {crop.days}</p>
+                    </div>
                   </div>
                 </div>
               ))}

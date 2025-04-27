@@ -18,7 +18,6 @@ export default function JoinPage() {
     }
     try {
 
-      
       await axios.post("http://localhost:5000/submitinfo", {
         name: "Guest",
         state,
@@ -38,10 +37,7 @@ export default function JoinPage() {
     <div className="d-flex align-items-center justify-content-center min-vh-100 bg-light">
       <div className="card shadow p-4" style={{ width: '100%', maxWidth: '450px' }}>
         <div className="text-center mb-4">
-          <div className="bg-success text-white rounded-circle d-flex align-items-center justify-content-center"
-               style={{ width: '50px', height: '50px', fontSize: '20px', fontWeight: 'bold' }}>
-            Y
-          </div>
+            <img src={logo} alt="Plantable Logo" style={{ width: "50px", height: "50px", marginRight: "12px" }} />
         </div>
 
         <h2 className="text-center fw-bold mb-2 text-success">Welcome to Plantable!</h2>
@@ -49,7 +45,7 @@ export default function JoinPage() {
 
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
-            <img src={logo} alt="Plantable Logo" style={{ width: "50px", height: "50px", marginRight: "12px" }} />
+            <label className="form-label fw-bold">🌱 State</label>
             <select
               className="form-select"
               style={{ maxWidth: '100%' }}

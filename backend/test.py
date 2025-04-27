@@ -48,6 +48,8 @@ def load_crops_from_csv():
             climate = row.get('Climate', '').strip().capitalize()  # 🛠 Trust CSV and just capitalize
             days_str = row.get('Days_to_Grow', '').strip()
             nutrition = row.get('Nutritional_Benefits', 'No nutrition info available').strip()
+            soil_type = row.get('Soil_Type', 'No soil type info').strip()
+            water_needs = row.get('Water_Needs', 'No water needs info').strip()
 
             if not name or not days_str:
                 print(f"Skipping row due to missing name or days: {row}")
@@ -60,7 +62,9 @@ def load_crops_from_csv():
                     "name": name,
                     "climate": climate,
                     "nutrition": nutrition,
-                    "days": days
+                    "days": days,
+                    "soil_type": soil_type,
+                    "water_needs": water_needs
                 }
 
                 crops.append(crop_obj)
@@ -174,6 +178,13 @@ def get_recipes():
     for crop in requested_crops:
         if crop in recipes_by_crop:
             matched_recipes[crop] = recipes_by_crop[crop]
+
+
+    print("Debug: Sending the following recipes back to frontend:")
+    for crop, recipes in matched_recipes.items():
+        print(f"{crop}: {len(recipes)} recipes")
+        for recipe in recipes:
+            print(f"    {recipe['title']} -> {recipe['url']}")
 
     return jsonify(matched_recipes)
 

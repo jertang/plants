@@ -30,7 +30,7 @@ export default function HomePage() {
           backgroundRepeat: "no-repeat",
           minHeight: "70vh",
           color: "white",
-          textShadow: "2px 2px 6px rgba(0,0,0,0.7)",
+          textShadow: "6px 6px 6px rgba(0, 0, 0, 0.7)",
           flexDirection: "column",
           padding: "2rem"
         }}

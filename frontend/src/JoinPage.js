@@ -23,7 +23,6 @@ export default function JoinPage() {
         state,
         climate,
         timeCommitment,
-        nutritional_benefits: "",
       });
   
       navigate('/dashboard', { state: { name, state, climate, timeCommitment } });
@@ -44,7 +43,7 @@ export default function JoinPage() {
         <p className="text-center text-muted mb-4">Let's get you started on your healthy journey!</p>
 
         <form onSubmit={handleSubmit}>
-          {/* Name input goes INSIDE the form */}
+          {/* Name input */}
           <div className="mb-3">
             <label className="form-label fw-bold">🧑 Name</label>
             <input

@@ -17,7 +17,7 @@ def load_crops_from_csv():
 
     with open(file_path, newline='', encoding='utf-8') as csvfile:
         reader = csv.DictReader(csvfile)
-        print("CSV Columns:", reader.fieldnames)  # ✅ PRINT 1: see actual column names
+        print("CSV Columns detected:", reader.fieldnames)
 
         for row in reader:
             name = row.get('Crop', '').strip()
@@ -25,9 +25,14 @@ def load_crops_from_csv():
             days_str = row.get('Days_to_Grow', '').strip()
             nutrition = row.get('Nutritional_Benefits', 'No nutrition info available').strip()
 
-            if name and days_str.isdigit():
-                days = int(days_str)
+            if not name or not days_str:
+                print(f"Skipping row due to missing name or days: {row}")
+                continue
 
+            try:
+                days = int(float(days_str))  # Handles '45', '45.0', etc.
+
+                # Climate mapping
                 climate_lower = climate.lower()
                 if "cool" in climate_lower or "fall" in climate_lower:
                     climate_type = "Cold"
@@ -38,17 +43,19 @@ def load_crops_from_csv():
 
                 crop_obj = {
                     "name": name,
-                    "climate": climate_type,
+                    "climate": climate_type.capitalize(),  # Always capitalized
                     "nutrition": nutrition,
                     "days": days
                 }
 
                 crops.append(crop_obj)
 
-                print("Added crop:", crop_obj)  # ✅ PRINT 2: see every crop that is actually added
+            except ValueError:
+                print(f"Skipping row due to invalid Days_to_Grow value: {row}")
 
-    print(f"Total crops loaded: {len(crops)}")  # ✅ PRINT 3: final confirmation
+    print(f"✅ Total crops successfully loaded: {len(crops)}")
     return crops
+
 
 
 

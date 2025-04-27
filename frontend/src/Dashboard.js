@@ -10,7 +10,7 @@ export default function Dashboard() {
   const [summary, setSummary] = useState("");
   const [crops, setCrops] = useState([]);
   const [recipes, setRecipes] = useState({});
-  const [nutrition, setNutrition] = useState({});
+  //const [nutrition, setNutrition] = useState({});
 
 
   useEffect(() => {
@@ -99,9 +99,6 @@ export default function Dashboard() {
               <p className="mb-2"><strong>Soil Type:</strong> {crop.soil_type}</p>
               <p className="mb-2"><strong>Water Needs:</strong> {crop.water_needs}</p>
               <ul>
-                {crop.nutrition?.map((fact, factIndex) => (
-                <li key={factIndex}>{fact}</li>
-                ))}
               </ul>
               </div>
             </div>

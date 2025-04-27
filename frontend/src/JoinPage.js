@@ -18,6 +18,7 @@ export default function JoinPage() {
       return;
     }
     try {
+      console.log("Name being sent to backend:", name);
       await axios.post("http://localhost:5000/submitinfo", {
         name,
         state,

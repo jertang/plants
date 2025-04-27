@@ -79,10 +79,10 @@ def filter_crops(climate_type, dedication_level):
 
 
 
-def generate_summary(crops):
+def generate_summary(crops, name):
     crops_list = [f"{crop['name']} ({crop['days']} days, {crop['climate']}) - {crop['nutrition']}" for crop in crops]
     prompt = (
-        "Say 'Hey new gardener!' at the beginning.\n\n"
+        f"Say 'Hey {name}' at the beginning.\n\n"
         "Here are some crops that grow well in the specified climate and time limit:\n\n"
         + "\n".join(crops_list)
         + "\n\n"
@@ -131,7 +131,7 @@ def submit_info():
     recommendations = filter_crops(climate, dedication_level)
     print("Recommendations generated:", recommendations)
 
-    summary = generate_summary(recommendations)
+    summary = generate_summary(recommendations, name)
     
     # Return responses to frontend
 

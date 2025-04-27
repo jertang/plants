@@ -25,13 +25,13 @@ export default function Dashboard() {
         setCrops(response.data.recommendations);
       } catch (error) {
         console.error("Error fetching data:", error);
-      }
+      } 
     };
   
     fetchData();
   }, [state, climate, timeCommitment]);
-  /*
 
+  /*
   const cropRecommendations = {
     hot: ["Tomatoes", "Peppers", "Basil", "Okra"],
     mild: ["Spinach", "Lettuce", "Broccoli", "Peas"],

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export default function JoinPage() {
   const [state, setState] = useState("");
@@ -8,13 +9,28 @@ export default function JoinPage() {
 
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!state || !climate || !timeCommitment) {
       alert("Please fill out all fields before proceeding!");
       return;
     }
-    navigate('/dashboard', { state: { state, climate, timeCommitment } });
+    try {
+
+      
+      await axios.post("http://localhost:5000/submitinfo", {
+        name: "Guest",
+        state,
+        climate,
+        timeCommitment,
+        nutritional_benefits: "",
+      });
+  
+      navigate('/dashboard', { state: { state, climate, timeCommitment } });
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      alert("There was an error submitting the form. Please try again.");
+    }
   };
 
   return (

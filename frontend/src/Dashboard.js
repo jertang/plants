@@ -10,11 +10,31 @@ export default function Dashboard() {
 
   const [summary, setSummary] = useState("");
   const [crops, setCrops] = useState([]);
+  const [recipes, setRecipes] = useState({});
 
 
+  const healthBenefits = {
+    hot: [
+      "Tomatoes: Supports heart health",
+      "Peppers: Boosts metabolism"
+    ],
+    mild: [
+      "Spinach: Boosts brain function",
+      "Broccoli: Strengthens immunity"
+    ],
+    cold: [
+      "Kale: Rich in iron",
+      "Carrots: Improves vision"
+    ]
+  };
+
+
+
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
+        //Get recommendations from flask
         const response = await axios.post("http://localhost:5000/submitinfo", {
           name,
           state,
@@ -27,32 +47,27 @@ export default function Dashboard() {
         });
         setSummary(response.data["LLM summary"]);
         setCrops(response.data.recommendations);
+
+        const cropNames = response.data.recommendations.map(crop => crop.name);
+
+        if (cropNames.length > 0) {
+          // Second: Fetch recipes for these crops
+          const recipesResponse = await axios.post("http://localhost:5000/get_recipes", {
+            crops: cropNames,
+          });
+
+          setRecipes(recipesResponse.data);
+        }
+
       } catch (error) {
         console.error("Error fetching data:", error);
       } 
     };
-  
-    fetchData();
+    if (name && state && climate && timeCommitment) {
+      fetchData();
+    }
+
   }, [name, state, climate, timeCommitment]);
-
-  /*
-  const cropRecommendations = {
-    hot: ["Tomatoes", "Peppers", "Basil", "Okra"],
-    mild: ["Spinach", "Lettuce", "Broccoli", "Peas"],
-    cold: ["Kale", "Cabbage", "Carrots", "Beets"]
-  };
-  */
-  const recipeIdeas = {
-    hot: ["Fresh Tomato Salad", "Spicy Pepper Stir Fry"],
-    mild: ["Spinach Smoothie", "Broccoli Rice Bowl"],
-    cold: ["Hearty Kale Soup", "Roasted Root Vegetables"]
-  };
-
-  const healthBenefits = {
-    hot: ["Tomatoes: ❤️ Supports heart health", "Peppers: 🔥 Boosts metabolism"],
-    mild: ["Spinach: 🧠 Boosts brain function", "Broccoli: 🛡️ Strengthens immunity"],
-    cold: ["Kale: 💪 Rich in iron", "Carrots: 👀 Improves vision"]
-  };
 
   return (
     <div className="container py-5">
@@ -82,18 +97,34 @@ export default function Dashboard() {
         </div>
       </section>
 
-      <section className="mb-5">
-        <h2 className="fw-bold mb-4">🍲 Recipe Ideas</h2>
-        <div className="row g-3">
-          {recipeIdeas[climate]?.map((recipe, index) => (
-            <div className="col-md-6" key={index}>
-              <div className="card shadow-sm p-3 text-center h-100">
-                <h5 className="fw-bold">{recipe}</h5>
+ <section className="mb-5">
+  <h2 className="fw-bold mb-4">🍲 Recipe Ideas</h2>
+  <div className="row g-3">
+    {crops.length > 0 ? (
+      crops.map((crop, index) => (
+        <div key={index} className="col-md-12 mb-4">
+          <h4 className="fw-bold text-success mb-3">{crop.name} Recipes</h4>
+          <div className="row g-3">
+            {recipes[crop.name]?.map((recipe, rIndex) => (
+              <div className="col-md-4" key={rIndex}>
+                <div
+                  className="card shadow-sm p-3 text-center h-100"
+                  onClick={() => window.open(recipe.url, "_blank")}
+                  style={{ cursor: "pointer" }}
+                >
+                  <h5 className="fw-bold">{recipe.title}</h5>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
-      </section>
+      ))
+    ) : (
+      <p>No recipes available.</p>
+    )}
+  </div>
+</section>
+
 
       <section>
         <h2 className="fw-bold mb-4">🥦 Nutritional Benefits</h2>

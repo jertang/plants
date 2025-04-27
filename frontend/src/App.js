@@ -8,10 +8,10 @@ function App() {
   return (
     <div className="App">
       <nav className="navbar navbar-expand-lg navbar-dark bg-success">
-        <div className="container">
-          <Link to="/" className="navbar-brand">
-            <img src={logo} alt="Plantable Logo" style={{ width: "50px", height: "50px" }} />
-            <Link to="/" className="navbar-brand">Plantable</Link>
+        <div className="container d-flex align-items-center">
+          <Link to="/" className="navbar-brand d-flex align-items-center">
+            <img src={logo} alt="Plantable Logo" style={{ width: "50px", height: "50px", marginRight: "12px" }} />
+            <span style={{ fontSize: "1.5rem", fontWeight: "bold" }}>Plantable</span>
           </Link>
         </div>
       </nav>

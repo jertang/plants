@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import logo from "./images/logo.png"; 
 import gardenimage from "./images/gardening.jpg";
 
 export default function HomePage() {
@@ -11,7 +12,10 @@ export default function HomePage() {
       <nav className="navbar navbar-expand-lg navbar-light bg-white border-bottom">
         <div className="container d-flex justify-content-between">
           <div className="d-flex align-items-center gap-4">
-            <div className="rounded-circle bg-success text-white d-flex justify-content-center align-items-center" style={{width: "40px", height: "40px", fontWeight: "bold"}}>Y</div>
+            {/* Logo properly loaded */}
+            <a href="/">
+              <img src={logo} alt="Plantable Logo" style={{ width: "50px", height: "50px" }} />
+            </a>
             <a className="nav-link" href="#">FAQ</a>
             <a className="nav-link" href="#">Contact Us</a>
           </div>

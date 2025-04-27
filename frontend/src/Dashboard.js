@@ -26,10 +26,7 @@ export default function Dashboard() {
       "Carrots: Improves vision"
     ]
   };
-
-
-
-    
+  
   useEffect(() => {
     const fetchData = async () => {
       try {

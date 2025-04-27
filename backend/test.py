@@ -11,6 +11,30 @@ load_dotenv()
 app = Flask(__name__)
 CORS(app)
 
+recipes_by_crop = {}
+
+def load_recipes_from_csv():
+    global recipes_by_crop
+    file_path = os.path.join('data', 'Plant_Recipes.csv')  # Adjust filename if different
+
+    with open(file_path, newline='', encoding='utf-8') as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            crop = row.get('Crop Name', '').strip()
+            if crop:
+                recipes = []
+                for i in range(1, 4):  # 3 recipes per crop
+                    title = row.get(f'Recipe Name {i}', '').strip()
+                    url = row.get(f'Link{i}', '').strip()
+                    if title and url:
+                        recipes.append({
+                            "title": title,
+                            "url": url
+                        })
+                recipes_by_crop[crop] = recipes
+
+    print(f"Loaded {len(recipes_by_crop)} crops with recipes.")
+
 def load_crops_from_csv():
     crops = []
     file_path = os.path.join('data', 'Crop_Database_with_Days_to_Grow.csv')
@@ -141,7 +165,18 @@ def submit_info():
         'LLM summary' : summary #AI generated summary of selected plants
     })
 
+@app.route('/get_recipes', methods=['POST'])
+def get_recipes():
+    data = request.get_json()
+    requested_crops = data.get('crops', [])
 
+    matched_recipes = {}
+    for crop in requested_crops:
+        if crop in recipes_by_crop:
+            matched_recipes[crop] = recipes_by_crop[crop]
+
+    return jsonify(matched_recipes)
 
 if __name__ == '__main__':
+    load_recipes_from_csv()  #will immediately load recipes
     app.run(debug=True, port=5000)

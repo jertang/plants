@@ -21,7 +21,7 @@ def load_crops_from_csv():
 
         for row in reader:
             name = row.get('Crop', '').strip()
-            climate = row.get('Climate', '').strip()
+            climate = row.get('Climate', '').strip().capitalize()  # 🛠 Trust CSV and just capitalize
             days_str = row.get('Days_to_Grow', '').strip()
             nutrition = row.get('Nutritional_Benefits', 'No nutrition info available').strip()
 
@@ -32,18 +32,9 @@ def load_crops_from_csv():
             try:
                 days = int(float(days_str))  # Handles '45', '45.0', etc.
 
-                # Climate mapping
-                climate_lower = climate.lower()
-                if "cool" in climate_lower or "fall" in climate_lower:
-                    climate_type = "Cold"
-                elif "warm" in climate_lower or "summer" in climate_lower:
-                    climate_type = "Hot"
-                else:
-                    climate_type = "Mild"
-
                 crop_obj = {
                     "name": name,
-                    "climate": climate_type.capitalize(),  # Always capitalized
+                    "climate": climate,
                     "nutrition": nutrition,
                     "days": days
                 }
@@ -59,23 +50,38 @@ def load_crops_from_csv():
 
 
 
-def filter_crops(climate_type, time_limit):
-    # 15 Crops Database
+
+def filter_crops(climate_type, dedication_level):
     crops = load_crops_from_csv()
-    #collect climate type 
+
+    dedication_ranges = {
+        "Low": (0, 30),
+        "Medium": (31, 75),
+        "High": (76, 150)
+    }
+
+    min_days, max_days = dedication_ranges.get(dedication_level, (0, 9999))
+    print(f"Dedication Level: {dedication_level} -> Days range: {min_days}-{max_days}")
+    print(f"User requested Climate: {climate_type}")
+
+    # Debug: print all crops
+    print("== ALL CROPS ==")
+    for crop in crops:
+        print(f"{crop['name']} | Climate: {crop['climate']} | Days: {crop['days']}")
+
     specific_climate = []
-    for crop in crops: 
+    for crop in crops:
         if crop["climate"].lower() == climate_type.lower():
             specific_climate.append(crop)
-        
+            
     res = []
-    for climate_crop in specific_climate: 
-        if climate_crop["days"] <= time_limit:
+    for climate_crop in specific_climate:
+        if min_days <= climate_crop["days"] <= max_days:
             res.append(climate_crop)
 
-    sorted_res = sorted(res, key=lambda x:x['days'])
-    #print("Sorted crops:", sorted_res)
+    sorted_res = sorted(res, key=lambda x: x['days'])
     return sorted_res
+
 
 
 def generate_summary(crops):
@@ -117,14 +123,15 @@ def home():
 def submit_info():
     data = request.get_json()
     name = data.get('name')
-    timeforgarden = int(data.get('timeforgarden'))
+    #timeforgarden = int(data.get('timeforgarden'))
+    dedication_level = data.get('dedication_level')
     state = data.get('state')
     climate = data.get('climate')
     nutrition_benefits = data.get('nutritional_benefits')
     
-    print(f"New submission: {name}, {climate}, {timeforgarden} days max")
+    print(f"New submission: {name}, {climate}, {dedication_level}")
 
-    recommendations = filter_crops(climate, timeforgarden)
+    recommendations = filter_crops(climate, dedication_level)
     print("Recommendations generated:", recommendations)
 
     summary = generate_summary(recommendations)

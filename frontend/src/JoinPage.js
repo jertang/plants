@@ -19,13 +19,20 @@ export default function JoinPage() {
     }
     try {
       console.log("Name being sent to backend:", name);
-      await axios.post("http://localhost:5000/submitinfo", {
-        name,
-        state,
-        climate,
-        timeCommitment,
-        nutritional_benefits: "",
-      });
+      await axios.post("http://localhost:5000/submitinfo",
+        {
+          name,
+          state,
+          climate,
+          timeCommitment,
+          nutritional_benefits: "",
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }
+      );
   
       navigate('/dashboard', { state: { name, state, climate, timeCommitment } });
     } catch (error) {

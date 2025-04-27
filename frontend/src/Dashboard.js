@@ -5,7 +5,7 @@ import axios from "axios";
 
 export default function Dashboard() {
   const location = useLocation();
-  const { state, climate, timeCommitment } = location.state || {};
+  const {name, state, climate, timeCommitment } = location.state || {};
 
 
   const [summary, setSummary] = useState("");
@@ -16,11 +16,15 @@ export default function Dashboard() {
     const fetchData = async () => {
       try {
         const response = await axios.post("http://localhost:5000/submitinfo", {
+          name,
           state,
           climate,
           timeCommitment,
+        }, {
+          headers: {
+            'Content-Type': 'application/json'
+          }
         });
-  
         setSummary(response.data["LLM summary"]);
         setCrops(response.data.recommendations);
       } catch (error) {
@@ -29,7 +33,7 @@ export default function Dashboard() {
     };
   
     fetchData();
-  }, [state, climate, timeCommitment]);
+  }, [name, state, climate, timeCommitment]);
 
   /*
   const cropRecommendations = {

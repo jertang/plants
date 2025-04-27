@@ -90,6 +90,7 @@ def generate_summary(crops):
         "- Highlights the nutritional and health benefits of these crops.\n"
         "- Explains how easy each crop is to grow.\n"
         "- Mentions which season each crop grows best in."
+        "- Avoid listing all lettuce and simply state produce"
     )
 
     genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
@@ -118,14 +119,14 @@ def home():
 def submit_info():
     data = request.get_json()
     print("Received from frontend:", data)  # Add this line for debugging
+
     name = data.get('name')
-    #timeforgarden = int(data.get('timeforgarden'))
     dedication_level = data.get('timeCommitment')
     state = data.get('state')
     climate = data.get('climate')
     #nutrition_benefits = data.get('nutritional_benefits')
     
-    print(f"New submission: {name}, {climate}, {dedication_level}")
+    print(f"New submission: {name}, {dedication_level}, {state}")
 
     recommendations = filter_crops(climate, dedication_level)
     print("Recommendations generated:", recommendations)

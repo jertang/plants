@@ -60,12 +60,16 @@ export default function Dashboard() {
       <section className="mb-5">
         <h2 className="fw-bold mb-4">🌱 Recommended Crops for You</h2>
         <div className="row g-3">
-        {crops.length > 0 ? (
-          crops.slice(0, 4).map((crop, index) => (
-            <div className="col-md-3" key={index}>
-              <div className="card shadow-sm p-3 text-center h-100">
-                <h5 className="fw-bold">{crop.name}</h5>
-              </div>
+                {crops.length > 0 ? (
+          [...Array(Math.ceil(crops.length / 4))].map((_, rowIndex) => (
+            <div className="row g-3 mb-3" key={rowIndex}>
+              {crops.slice(rowIndex * 4, rowIndex * 4 + 4).map((crop, index) => (
+                <div className="col-md-3" key={index}>
+                  <div className="card shadow-sm p-3 text-center h-100">
+                    <h5 className="fw-bold">{crop.name}</h5>
+                  </div>
+                </div>
+              ))}
             </div>
           ))
         ) : (

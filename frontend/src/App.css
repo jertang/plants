@@ -284,3 +284,8 @@ body {
   color: #333333;
   text-align: center;
 }
+
+button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}

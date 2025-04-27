@@ -12,12 +12,9 @@ export default function HomePage() {
       <nav className="navbar navbar-expand-lg navbar-light bg-white border-bottom">
         <div className="container d-flex justify-content-between">
           <div className="d-flex align-items-center gap-4">
-            {/* Logo properly loaded */}
-            <a href="/">
-              <img src={logo} alt="Plantable Logo" style={{ width: "50px", height: "50px" }} />
-            </a>
             <a className="nav-link" href="#">FAQ</a>
             <a className="nav-link" href="#">Contact Us</a>
+            <a className="nav-link" href="#">Blog</a>
           </div>
         </div>
       </nav>
@@ -38,7 +35,7 @@ export default function HomePage() {
         }}
       >
         <div className="container">
-          <h1 className="display-4 fw-bold">Feed It Eat It</h1>
+          <h1 className="display-4 fw-bold">Plantable</h1>
           <p className="lead">An Accessible Way to Healthier Eating & Living</p>
 
           {/* Why Join Us */}

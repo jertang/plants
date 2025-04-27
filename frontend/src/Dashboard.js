@@ -1,17 +1,43 @@
 
-import React from "react";
+import React,{ useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import axios from "axios";
 
 export default function Dashboard() {
   const location = useLocation();
   const { state, climate, timeCommitment } = location.state || {};
+
+
+  const [summary, setSummary] = useState("");
+  const [crops, setCrops] = useState([]);
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.post("http://localhost:5000/submitinfo", {
+          state,
+          climate,
+          timeCommitment,
+        });
+  
+        setSummary(response.data["LLM summary"]);
+        setCrops(response.data.recommendations);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+  
+    fetchData();
+  }, [state, climate, timeCommitment]);
+  /*
 
   const cropRecommendations = {
     hot: ["Tomatoes", "Peppers", "Basil", "Okra"],
     mild: ["Spinach", "Lettuce", "Broccoli", "Peas"],
     cold: ["Kale", "Cabbage", "Carrots", "Beets"]
   };
-
+  */
   const recipeIdeas = {
     hot: ["Fresh Tomato Salad", "Spicy Pepper Stir Fry"],
     mild: ["Spinach Smoothie", "Broccoli Rice Bowl"],
@@ -27,18 +53,24 @@ export default function Dashboard() {
   return (
     <div className="container py-5">
       <h1 className="text-center fw-bold text-success mb-4">Here's what you can grow and enjoy!</h1>
-      <p className="text-center text-muted mb-5">Based on your state and climate selection</p>
+      <p className="text-center text-muted mb-5">
+      {summary ? summary : "Loading summary..."}
+    </p>
 
       <section className="mb-5">
         <h2 className="fw-bold mb-4">🌱 Recommended Crops for You</h2>
         <div className="row g-3">
-          {cropRecommendations[climate]?.map((crop, index) => (
+        {crops.length > 0 ? (
+          crops.slice(0, 4).map((crop, index) => (
             <div className="col-md-3" key={index}>
               <div className="card shadow-sm p-3 text-center h-100">
-                <h5 className="fw-bold">{crop}</h5>
+                <h5 className="fw-bold">{crop.name}</h5>
               </div>
             </div>
-          ))}
+          ))
+        ) : (
+          <p>No crops available for your selection.</p>
+        )}
         </div>
       </section>
 
